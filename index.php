@@ -3,7 +3,7 @@
     session_start();
 
     require_once('php/dbconnection.php');
-
+    
    if (isset($_POST['signin'])){
 
        $signin_email = strip_tags($_POST['email']);

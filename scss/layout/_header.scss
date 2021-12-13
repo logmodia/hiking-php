@@ -1,0 +1,27 @@
+.header {
+    background-image: url(../assets/hikerPanorama.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-bottom: 10px;
+
+    &__nav {
+        text-align: right;
+        &__element {
+            display: inline-block;
+            list-style: none;
+            padding: 10px;
+            font-weight: bold;
+            color: white;
+        }
+    }
+    &__containnerLogoTitle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .logo {
+            width: 300px;
+            height: 300px;
+        }
+    }
+}
