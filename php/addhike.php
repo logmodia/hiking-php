@@ -78,46 +78,61 @@
 
 ?>
 
-<h1>Add a new trail</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet"/>
+    <title>Hikingtrailshare | add hike trails</title>
+</head>
+<body>
+    <?php include_once("header.php");?>
+    <h1>Add a new trail</h1>
 
-<form method="post" action="">
-    <div>
-        <label for="hikeName">Trail name *</label></br>
-        <input type="text" name="hikeName">
-    </div>
+    <form method="post" action="">
+        <div>
+            <label for="hikeName">Trail name *</label></br>
+            <input type="text" name="hikeName">
+        </div>
 
-    <div>
-        <label for="dificulty">Difficulty *</label></br>
-        <input type="text" name="dificulty" list="dificultyTypes" id="dificulty">
-        <datalist id="dificultyTypes">
-            <option value="Easy">
-            <option value="Medium">
-            <option value="Difficult">
-        </datalist>
-    </div>
+        <div>
+            <label for="dificulty">Difficulty *</label></br>
+            <input type="text" name="dificulty" list="dificultyTypes" id="dificulty">
+            <datalist id="dificultyTypes">
+                <option value="Easy">
+                <option value="Medium">
+                <option value="Difficult">
+            </datalist>
+        </div>
 
-    <div>
-        <label for="distance">Distance *</label></br>
-        <input type="text" name="distance">
-        <span>Km</span>
-    </div>
-    <div>
-        <label for="hour">Duration</label></br>
-        <span>H</span>
-        <input type="number" name="hour" min="0" placeholder="Hour(s)">
-        <span>min</span>
-        <input type="number" name="minute" min="0" max="60" placeholder="minute(s)">
-    </div>
-    <div>
-        <label for="elevationGain">Elevation gain</label></br>
-        <input type="text" name="elevationGain">
-        <span>m</span>
-    </div>
-    
-    <button type="submit" name="addhike">Confirm</button>
-    <button type="reset" name="Reset">Reset</button>
-    <a href="readhikes.php">
-        <button type="button" name="cancel">Cancel</button>
-    </a>
+        <div>
+            <label for="distance">Distance *</label></br>
+            <input type="text" name="distance">
+            <span>Km</span>
+        </div>
+        <div>
+            <label for="hour">Duration</label></br>
+            <span>H</span>
+            <input type="number" name="hour" min="0" placeholder="Hour(s)">
+            <span>min</span>
+            <input type="number" name="minute" min="0" max="60" placeholder="minute(s)">
+        </div>
+        <div>
+            <label for="elevationGain">Elevation gain</label></br>
+            <input type="text" name="elevationGain">
+            <span>m</span>
+        </div>
+        
+        <button type="submit" name="addhike">Confirm</button>
+        <button type="reset" name="Reset">Reset</button>
+        <a href="readhikes.php">
+            <button type="button" name="cancel">Cancel</button>
+        </a>
 
-</form>
+    </form>
+    <?php include_once("footer.php");?>
+</body>
+</html>

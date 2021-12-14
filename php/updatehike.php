@@ -29,7 +29,6 @@
      $hour = intval($_POST["hour"]);
      $minute = intval($_POST["minute"]);
      $elevationGain = $_POST["elevationGain"];
-     $userNickname = ucfirst($_POST["userNickname"]);
      $duration = "$hour:$minute";
 
      //Nickname,difficulty and distance are mandatory (they can't be empty)
@@ -51,7 +50,7 @@
 
      }else {
          $reqInsert_hike = $db->prepare("UPDATE hikes SET hikeName = :hikeName,dificulty = :dificulty,
-         distance = :distance,duration = :duration,elevationGain = :elevationGain,userNickname = :userNickname
+         distance = :distance,duration = :duration,elevationGain = :elevationGain
          WHERE idhike = $currentIDHIKE");
  
          $reqInsert_hike->bindParam(":hikeName",  $hikeName,PDO::PARAM_STR);
@@ -59,7 +58,6 @@
          $reqInsert_hike->bindParam(":distance", $distance);
          $reqInsert_hike->bindParam(":duration", $duration);
          $reqInsert_hike->bindParam(":elevationGain", $elevationGain);
-         $reqInsert_hike->bindParam(":userNickname", $userNickname);
  
          $reqInsert_hike->execute();
          // redirect to index when done
@@ -75,11 +73,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update hike</title>
+    <link rel="stylesheet" href="/style.min.css">
+    <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet"/>
+    <title>Hikingtrailshare | Update hike trails</title>
 </head>
 <body>
-    
-<h1>Update trail</h1>
+
+    <?php include_once("header.php");?>
+
+    <h1>Update trail</h1>
 
     <form method="post" action="">
         <div>
@@ -114,10 +116,6 @@
             <input type="text" name="elevationGain" value="<?php echo $hikes[0]["elevationGain"] ?>">
             <span>m</span>
         </div>
-        <div>
-            <label for="userNickname">User</label></br>
-            <input type="text" name="userNickname" value="<?php echo $hikes[0]["userNickname"] ?>">
-        </div>
         <button type="submit" name="update_hike">Confirm</button>
         <button type="reset" name="Reset">Reset</button>
         <a href="readhikes.php">
@@ -125,6 +123,8 @@
         </a>
 
     </form>
+
+    <?php include_once("footer.php");?>
 
 </body>
 </html>

@@ -46,6 +46,7 @@
                                 "userNickname" => $user["userNickname"],
                                 "email" => $user["email"],
                                 "category" => $user["category"],
+                                "password" => $user["password"],
                                 //"sessionExpiration" => date('H:i:s')
                             ];
                             header("location: ./php/readhikes.php");
