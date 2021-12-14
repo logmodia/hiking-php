@@ -48,7 +48,7 @@
                                 "category" => $user["category"],
                                 //"sessionExpiration" => date('H:i:s')
                             ];
-                            header("location: ".$_SERVER['DOCUMENT_ROOT']."/php/readhikes.php");
+                            header("location: ./php/readhikes.php");
                         }
                     }
     
@@ -60,7 +60,7 @@
         } 
     
     } elseif (isset($_POST['signup'])) { // Redirect to sign up page when sign up button is clicked from the sign in page
-        header("location: ".$_SERVER['DOCUMENT_ROOT']."/php/user_signup.php");
+        header("location: ./php/user_signup.php");
 
     }
          
