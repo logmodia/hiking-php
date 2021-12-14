@@ -1,12 +1,12 @@
 <?php
 
-if (!isset($_ENV['paramConnect'])){
+if (!isset($_ENV['HOST'])){
     include_once('var_environ.php');
-    define("HOST", $_ENV['paramConnect']['HOST']);
-    define("DB", $_ENV['paramConnect']['DB']);
-    define("PORT", $_ENV['paramConnect']['PORT']);
-    define("LOGIN", $_ENV['paramConnect']['LOGIN']);
-    define("PASSWORD", $_ENV['paramConnect']['PASSWORD']);
+    define("HOST", $_ENV['HOST']);
+    define("DB", $_ENV['DB']);
+    define("PORT", $_ENV['PORT']);
+    define("LOGIN", $_ENV['LOGIN']);
+    define("PASSWORD", $_ENV['PASSWORD']);
 }
 
 try {
