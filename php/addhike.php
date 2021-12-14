@@ -5,13 +5,13 @@
     logout();
 
 $errors=[];
-//setting the input fileds into empty by default and at refresh
-// $hikeName='';
-// $distance='';
-// $dificulty='';
-// $hour='';
-// $minute='';
-// $elevationGain='';
+// setting the input fileds into empty by default and at refresh
+$hikeName='';
+$distance='';
+$dificulty='';
+$hour='';
+$minute='';
+$elevationGain='';
 
 //we are puting a condition if the request method is post then execute(insert)the below stated data into the database
 if ($_SERVER['REQUEST_METHOD']==='POST') {

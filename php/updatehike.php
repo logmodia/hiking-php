@@ -2,7 +2,7 @@
   require_once('dbconnection.php');
   require_once('logout.php');
 
-//  logout();
+ logout();
 
 $idhike=$_GET['idhike'] ?? null;
 
