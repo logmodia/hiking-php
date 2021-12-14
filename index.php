@@ -14,6 +14,8 @@
         $q->execute();
         $x=$q->fetchAll(PDO::FETCH_ASSOC);
         print_r($x);
+        print_r($_ENV);
+        
     } catch(Exception $e) {
         // We intantiate an Exception object in $e so we can use methods within this object to display errors nicely
         echo $e->getMessage();
