@@ -27,7 +27,7 @@ $errors=[];
 
 //we are puting a condition if the request method is post then execute(insert)the below stated data into the database
 if ($_SERVER['REQUEST_METHOD']==='POST') {
-   //TODO check the below segment if it didn't work well
+
    $hikeName = ucfirst($_POST["hikeName"]);
    $dificulty = ucfirst($_POST["dificulty"]);
    $distance = $_POST["distance"];
@@ -73,13 +73,15 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
         $reqInsert_hike = $db->prepare("UPDATE hikes SET hikeName = :hikeName,dificulty = :dificulty,
         distance = :distance,duration = :duration,elevationGain = :elevationGain,userNickname = :userNickname
         WHERE idhike = $idhike");
-
+$reqInsert_hike->bindValue(":idhike", $idhike);
 $reqInsert_hike->bindParam(":hikeName",  $hikeName,PDO::PARAM_STR);
 $reqInsert_hike->bindParam(":dificulty", $dificulty,PDO::PARAM_STR);
 $reqInsert_hike->bindParam(":distance", $distance);
 $reqInsert_hike->bindParam(":duration", $duration);
 $reqInsert_hike->bindParam(":elevationGain", $elevationGain);
 $reqInsert_hike->bindParam(":userNickname", $userNickname);
+
+
 
 $reqInsert_hike->execute();
 // redirect to index when done
@@ -123,7 +125,7 @@ header("location: readhikes.php");
 </div>
 <?php endif;?>
 <!-- when uploading files in php we have to specify the "enctype"attribute which helps our form to accept file formats like images -->
-<form action="addhike.php" method="post" enctype="multipart/form-data">
+<form action="updatehike.php" method="post" enctype="multipart/form-data">
   <div class="mb-3">
     <label>Hike name</label>
     <input type="text" name="hikeName"class="form-control" value="<?php echo $hike['hikeName'];?>">
@@ -131,7 +133,7 @@ header("location: readhikes.php");
 
   <div class="mb-3">
         <label>Difficulty *</label></br>
-        <input type="text" name="dificulty" class="form-control" list="dificultyTypes" id="dificulty">
+        <input type="text" name="dificulty" class="form-control" list="dificultyTypes" id="dificulty" value="<?php echo $hike['dificulty'];?>">
         <datalist id="dificultyTypes">
             <option value="Easy">
             <option value="Medium">
@@ -142,21 +144,21 @@ header("location: readhikes.php");
 
  <div class="mb-3">
     <label>Distance *</label>
-    <input type="number" step="0.1" class="form-control" name="distance" value="<?php echo $distance;?>">
+    <input type="number" step="0.1" class="form-control" name="distance" value="<?php echo $hike['distance'];?>">
     <span>Km</span>
   </div>
 
   <div class="mb-3">
         <label for="hour">Duration</label>
         <span>H</span>
-        <input type="number" class="form-control" name="hour" min="0" placeholder="Hour(s)" value="<?php echo $hour;?>" >
+        <input type="number" class="form-control" name="hour" min="0" placeholder="Hour(s)" value="<?php echo $duration['hour'];?> " >
         <span>min</span>
-        <input type="number" class="form-control" name="minute" min="0" max="60" placeholder="minute(s)" value="<?php echo $minute;?>" >
+        <input type="number" class="form-control" name="minute" min="0" max="60" placeholder="minute(s)" value="<?php echo $duration['minutes'];?>" >
     </div>
 
   <div class="mb-3">
         <label>Elevation gain</label></br>
-        <input type="number" step="0.1" class="form-control" name="elevationGain" value="<?php echo $elevationGain;?>">
+        <input type="number" step="0.1" class="form-control" name="elevationGain" value="<?php echo $hike['elevationGain'];?>">
         <span>m</span>
     </div>
 
