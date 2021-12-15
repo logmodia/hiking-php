@@ -1,91 +1,71 @@
 <?php
-  require_once('dbconnection.php');
-  require_once('logout.php');
+  
+    require_once('dbconnection.php');
+    require_once('logout.php');
 
- logout();
+    logout();
 
-    $idhike=$_GET['idhike'] ?? null;
-
-    if(!$idhike){
-        header('Location:readhikes.php');
-        exit;
-    };
-
+   if (isset($_GET["idhike"]) && !empty($_GET["idhike"]) && is_numeric($_GET["idhike"])){
     try {
-        //fetching and preparing the target product based on ID
-        $qsel_hikes=$db->prepare("SELECT idhike,hikeName,dificulty,distance,TIME_FORMAT(duration,'%Hh %i') AS duration,elevationGain,
-        DATE(creatDate) AS creatDate,DATE(modifDate) AS modifDate,userNickname FROM hikes WHERE idhike=:idhike");
-        $qsel_hikes->bindValue(':idhike',$idhike);
+        $currentIDHIKE = $_GET["idhike"];
+        
+        $qsel_hikes = $db->prepare("SELECT idhike,hikeName,dificulty,distance,TIME_FORMAT(duration,'%Hh %i') AS duration,elevationGain,
+        DATE(creatDate),DATE(modifDate),userNickname FROM hikes WHERE idhike = $currentIDHIKE ");
+        
         $qsel_hikes->execute();
-        $hike=$qsel_hikes->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-        exit;
+        $hikes = $qsel_hikes->fetchall(PDO::FETCH_ASSOC);
+        
+    } catch (exception $e) {
+      echo $e->getmessage();
+      exit;
     }
+   }
+   
+
+   if (isset($_POST["update_hike"])) { //Update the current hike -----------------------------------
     
-    /* 
-    <input type="number" name="hour" min="0" value="<?php echo substr($hikes[0]["duration"],0,2) ?>">
-    <span>min</span>
-    <input type="number" name="minute" min="0" max="60" value="<?php echo substr($hikes[0]["duration"],-2) ?>"> */
-
-    $errors=[];
-
-    //we are puting a condition if the request method is post then execute(insert)the below stated data into the database
-    if ($_SERVER['REQUEST_METHOD']==='POST') {
-
     $hikeName = ucfirst($_POST["hikeName"]);
     $dificulty = ucfirst($_POST["dificulty"]);
     $distance = $_POST["distance"];
     $hour = intval($_POST["hour"]);
     $minute = intval($_POST["minute"]);
     $elevationGain = $_POST["elevationGain"];
-    $userNickname = ucfirst($_POST["userNickname"]);
     $duration = "$hour:$minute";
 
-        if(!$hikeName){
-            $errors[]='Hike Name is required';
-        
-        }elseif(!$dificulty){
-            $errors[]='Hike dificulty is required';
-        
-        }elseif(!$distance){
-            $errors[]='Hike distance is required';
-            
-        }elseif (isset($hour,$minute) && (!is_int($hour) || !is_int($minute))) {
-                //Hour and minute must have INT data type, and distance and elevationGain must have Numerics (or decimals) data type
-                $errors[]='Hour and minute have to be integers';
+     //Nickname,difficulty and distance are mandatory (they can't be empty)
+     if (!isset($hikeName, $dificulty,$distance) || empty($hikeName) || empty($dificulty) || empty($distance)){
+         echo '<script>alert("Nickname,difficulty and distance are mandatory. They can not be empty")</script>';
 
-        }elseif (isset($distance,$elevationGain) && (!is_numeric($distance) || !is_numeric($elevationGain))){
-            $errors[]='Distance and elevationGain have to be Numerics (or decimals)';
-        
-        }elseif ($distance < 0 || $elevationGain < 0 || $hour < 0 || $minute < 0) {
-            //Disatance, elevation gain, hour and minute must not be below zero
-            $errors[]='Disatance, elevation gain, hour and minute must not be below zero';
+     }elseif (isset($hour,$minute) && (!is_int($hour) || !is_int($minute))){
+         //Hour and minute must have INT data type, and distance and elevationGain must have Numerics (or decimals) data type
+         echo '<script>alert("Hour and minute have to be integers")</script>';
 
-        }elseif ($minute > 60) {
-            $errors[]='Minutes must not be giger than 60';
+     }elseif (isset($distance,$elevationGain) && (!is_numeric($distance) || !is_numeric($elevationGain))){
+         echo '<script>alert("Distance and elevationGain have to be Numerics (or decimals)")</script>';
 
-        }else try {
-            $reqInsert_hike = $db->prepare("UPDATE hikes SET hikeName = ':hikeName',dificulty = ':dificulty',
-            distance = ':distance',duration = ':duration',elevationGain = ':elevationGain'
-            WHERE idhike = $idhike");
+     }elseif ($distance < 0 || $elevationGain < 0 || $hour < 0 || $minute < 0){
+         //Disatance, elevation gain, hour and minute must not be below zero
+         echo '<script>alert("Disatance, elevation gain, hour and minute must not be below zero")</script>';
+     }elseif ($minute > 60) {
+         echo'<script>alert("Minutes must not be giger than 60")</script>';
 
+     }else {
+        print_r($currentIDHIKE);
+            /* $reqInsert_hike = $db->prepare("UPDATE hikes SET hikeName = :hikeName,dificulty = :dificulty,
+            distance = :distance,duration = :duration,elevationGain = :elevationGain WHERE idhike = $currentIDHIKE");
+    
             $reqInsert_hike->bindParam(":hikeName",  $hikeName,PDO::PARAM_STR);
             $reqInsert_hike->bindParam(":dificulty", $dificulty,PDO::PARAM_STR);
             $reqInsert_hike->bindParam(":distance", $distance);
             $reqInsert_hike->bindParam(":duration", $duration);
             $reqInsert_hike->bindParam(":elevationGain", $elevationGain);
-
+    
             $reqInsert_hike->execute();
             // redirect to index when done
-            header("location: readhikes.php");
-
-        }catch (exception $e) {
-            echo $e->getmessage();
-            exit;
-        }
-                
-    };
+            header("location: readhikes.php");*/
+        } 
+    }
+  
 
 ?>
 
@@ -108,7 +88,7 @@
         <?php include_once("header.php");?>
 
         <p><a href="readhikes.php" class="btn btn-secondary">Get Back to Hikes list</a></p>
-        <h1><?php echo $hike['hikeName']?></h1>
+        <h1><?php echo $hikes[0]['hikeName'];?></h1>
 
         <!-- //if errors are not empty(if there are errors) then it will execute the following code -->
         <?php if(!empty($errors)): ?>
@@ -123,29 +103,28 @@
     <form action="updatehike.php" method="post" enctype="multipart/form-data">
     
         <label>Hike name</label>
-        <input type="text" name="hikeName"class="form-control" value="<?php echo $hike['hikeName'];?>">
+        <input type="text" name="hikeName"class="form-control" value="<?php echo $hikes[0]['hikeName'];?>">
         <label>Difficulty *</label></br>
-        <input type="text" name="dificulty" class="form-control" list="dificultyTypes" id="dificulty" value="<?php echo $hike['dificulty'];?>">
+        <input type="text" name="dificulty" class="form-control" list="dificultyTypes" id="dificulty" value="<?php echo $hikes[0]['dificulty'];?>">
         <datalist id="dificultyTypes">
             <option value="Easy">
             <option value="Medium">
             <option value="Difficult">
         </datalist>
         <label>Distance (km) *</label>
-        <input type="number" step="0.1" class="form-control" name="distance" value="<?php echo $hike['distance'];?>">
+        <input type="number" step="0.1" class="form-control" name="distance" value="<?php echo $hikes[0]['distance'];?>">
         <label for="hour">Duration</label>
         <span>H</span>
-        <input type="number" class="form-control" name="hour" min="0" max="60" placeholder="minute(s)" value="<?php echo substr($hike['duration'],0,2);?>" >
+        <input type="number" class="form-control" name="hour" min="0"  placeholder="minute(s)" value="<?php echo substr($hikes[0]['duration'],0,2);?>" >
         <span>min</span>
-        <input type="number" class="form-control" name="minute" min="0" max="60" placeholder="minute(s)" value="<?php echo substr($hike['duration'],-2);?>" >
+        <input type="number" class="form-control" name="minute" min="1" max="60" placeholder="minute(s)" value="<?php echo substr($hikes[0]['duration'],-2);?>" >
     
         <label>Elevation gain (m)</label></br>
-        <input type="number" step="0.1" class="form-control" name="elevationGain" value="<?php echo $hike['elevationGain'];?>">
+        <input type="number" step="0.1" class="form-control" name="elevationGain" value="<?php echo $hikes[0]['elevationGain'];?>">
         <div class="m-3"></div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" name="update_hike" class="btn btn-primary">Submit</button>
     </form>
     <?php include_once("footer.php");?>
 
   </body>
 </html>
-
