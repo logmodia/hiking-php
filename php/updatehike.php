@@ -13,7 +13,8 @@
 
     try {
         //fetching and preparing the target product based on ID
-        $qsel_hikes=$db->prepare('SELECT * FROM hikes WHERE idhike=:idhike');
+        $qsel_hikes=$db->prepare("SELECT idhike,hikeName,dificulty,distance,TIME_FORMAT(duration,'%Hh %i') AS duration,elevationGain,
+        DATE(creatDate) AS creatDate,DATE(modifDate) AS modifDate,userNickname FROM hikes WHERE idhike=:idhike");
         $qsel_hikes->bindValue(':idhike',$idhike);
         $qsel_hikes->execute();
         $hike=$qsel_hikes->fetch(PDO::FETCH_ASSOC);
@@ -21,9 +22,11 @@
         echo $e->getMessage();
         exit;
     }
+    
+    /* 
     <input type="number" name="hour" min="0" value="<?php echo substr($hikes[0]["duration"],0,2) ?>">
     <span>min</span>
-    <input type="number" name="minute" min="0" max="60" value="<?php echo substr($hikes[0]["duration"],-2) ?>">
+    <input type="number" name="minute" min="0" max="60" value="<?php echo substr($hikes[0]["duration"],-2) ?>"> */
 
     $errors=[];
 
@@ -64,16 +67,14 @@
 
         }else try {
             $reqInsert_hike = $db->prepare("UPDATE hikes SET hikeName = :hikeName,dificulty = :dificulty,
-            distance = :distance,duration = :duration,elevationGain = :elevationGain,userNickname = :userNickname
+            distance = :distance,duration = :duration,elevationGain = :elevationGain
             WHERE idhike = $idhike");
 
-            $reqInsert_hike->bindValue(":idhike", $idhike);
             $reqInsert_hike->bindParam(":hikeName",  $hikeName,PDO::PARAM_STR);
             $reqInsert_hike->bindParam(":dificulty", $dificulty,PDO::PARAM_STR);
             $reqInsert_hike->bindParam(":distance", $distance);
             $reqInsert_hike->bindParam(":duration", $duration);
             $reqInsert_hike->bindParam(":elevationGain", $elevationGain);
-            $reqInsert_hike->bindParam(":userNickname", $userNickname);
 
             $reqInsert_hike->execute();
             // redirect to index when done
@@ -134,9 +135,9 @@
         <input type="number" step="0.1" class="form-control" name="distance" value="<?php echo $hike['distance'];?>">
         <label for="hour">Duration</label>
         <span>H</span>
-        <input type="number" class="form-control" name="hour" min="0" placeholder="Hour(s)" value="<?php echo $duration['duration'];?> " >
+        <input type="number" class="form-control" name="hour" min="0" max="60" placeholder="minute(s)" value="<?php echo substr($hike['duration'],0,2);?>" >
         <span>min</span>
-        <input type="number" class="form-control" name="minute" min="0" max="60" placeholder="minute(s)" value="<?php echo $duration['minutes'];?>" >
+        <input type="number" class="form-control" name="minute" min="0" max="60" placeholder="minute(s)" value="<?php echo substr($hike['duration'],-2);?>" >
     
         <label>Elevation gain (m)</label></br>
         <input type="number" step="0.1" class="form-control" name="elevationGain" value="<?php echo $hike['elevationGain'];?>">
