@@ -86,7 +86,7 @@ try {
           <td><?php echo "Updated at ".$hike['modifDate']; ?></td>
           <td><?php echo $hike['userNickname'];?></td>
           <td>
-           <a href="updatehike.php?idhike=<?php echo $hike['idhike'];?>" class="btn btn-sm btn-outline-primary">Edit</a>
+           <a href="updatehike.php?modifhike=<?php echo $hike['idhike'];?>" class="btn btn-sm btn-outline-primary">Edit</a>
 
             <form action="delete.php" method="post" style="display: inline-block">
               <input type="hidden" name="idhike" value="<?php echo$hike['idhike']?>">

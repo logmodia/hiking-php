@@ -1,71 +1,72 @@
 <?php
   
-    require_once('dbconnection.php');
-    require_once('logout.php');
+  require_once('dbconnection.php');
+  require_once('logout.php');
 
-    logout();
+ logout();
 
-   if (isset($_GET["idhike"]) && !empty($_GET["idhike"]) && is_numeric($_GET["idhike"])){
-    try {
-        $currentIDHIKE = $_GET["idhike"];
-        
-        $qsel_hikes = $db->prepare("SELECT idhike,hikeName,dificulty,distance,TIME_FORMAT(duration,'%Hh %i') AS duration,elevationGain,
-        DATE(creatDate),DATE(modifDate),userNickname FROM hikes WHERE idhike = $currentIDHIKE ");
-        
-        $qsel_hikes->execute();
-        $hikes = $qsel_hikes->fetchall(PDO::FETCH_ASSOC);
-        
-    } catch (exception $e) {
-      echo $e->getmessage();
-      exit;
-    }
+  if (isset($_GET["modifhike"]) && !empty($_GET["modifhike"]) && is_numeric($_GET["modifhike"])){
+   try {
+       $currentIDHIKE = $_GET["modifhike"];
+
+       $qsel_hikes = $db->prepare("SELECT idhike,hikeName,dificulty,distance,TIME_FORMAT(duration,'%Hh %i') AS duration,elevationGain,
+       DATE(creatDate),DATE(modifDate),userNickname FROM hikes WHERE idhike = $currentIDHIKE ");
+       
+       $qsel_hikes->execute();
+       $hikes = $qsel_hikes->fetchall(PDO::FETCH_ASSOC);
+       
+   } catch (exception $e) {
+     echo $e->getmessage();
+     exit;
    }
-   
-
-   if (isset($_POST["update_hike"])) { //Update the current hike -----------------------------------
-    
-    $hikeName = ucfirst($_POST["hikeName"]);
-    $dificulty = ucfirst($_POST["dificulty"]);
-    $distance = $_POST["distance"];
-    $hour = intval($_POST["hour"]);
-    $minute = intval($_POST["minute"]);
-    $elevationGain = $_POST["elevationGain"];
-    $duration = "$hour:$minute";
-
-     //Nickname,difficulty and distance are mandatory (they can't be empty)
-     if (!isset($hikeName, $dificulty,$distance) || empty($hikeName) || empty($dificulty) || empty($distance)){
-         echo '<script>alert("Nickname,difficulty and distance are mandatory. They can not be empty")</script>';
-
-     }elseif (isset($hour,$minute) && (!is_int($hour) || !is_int($minute))){
-         //Hour and minute must have INT data type, and distance and elevationGain must have Numerics (or decimals) data type
-         echo '<script>alert("Hour and minute have to be integers")</script>';
-
-     }elseif (isset($distance,$elevationGain) && (!is_numeric($distance) || !is_numeric($elevationGain))){
-         echo '<script>alert("Distance and elevationGain have to be Numerics (or decimals)")</script>';
-
-     }elseif ($distance < 0 || $elevationGain < 0 || $hour < 0 || $minute < 0){
-         //Disatance, elevation gain, hour and minute must not be below zero
-         echo '<script>alert("Disatance, elevation gain, hour and minute must not be below zero")</script>';
-     }elseif ($minute > 60) {
-         echo'<script>alert("Minutes must not be giger than 60")</script>';
-
-     }else {
-        print_r($currentIDHIKE);
-            /* $reqInsert_hike = $db->prepare("UPDATE hikes SET hikeName = :hikeName,dificulty = :dificulty,
-            distance = :distance,duration = :duration,elevationGain = :elevationGain WHERE idhike = $currentIDHIKE");
-    
-            $reqInsert_hike->bindParam(":hikeName",  $hikeName,PDO::PARAM_STR);
-            $reqInsert_hike->bindParam(":dificulty", $dificulty,PDO::PARAM_STR);
-            $reqInsert_hike->bindParam(":distance", $distance);
-            $reqInsert_hike->bindParam(":duration", $duration);
-            $reqInsert_hike->bindParam(":elevationGain", $elevationGain);
-    
-            $reqInsert_hike->execute();
-            // redirect to index when done
-            header("location: readhikes.php");*/
-        } 
-    }
+  }
   
+
+  if (isset($_POST["update_hike"])) { //Update the current hike -----------------------------------
+    var_dump($currentIDHIKE);
+   $hikeName = ucfirst($_POST["hikeName"]);
+   $dificulty = ucfirst($_POST["dificulty"]);
+   $distance = $_POST["distance"];
+   $hour = intval($_POST["hour"]);
+   $minute = intval($_POST["minute"]);
+   $elevationGain = $_POST["elevationGain"];
+   //$userNickname = ucfirst($_POST["userNickname"]);
+   $duration = "$hour:$minute";
+
+    //Nickname,difficulty and distance are mandatory (they can't be empty)
+    if (!isset($hikeName, $dificulty,$distance) || empty($hikeName) || empty($dificulty) || empty($distance)){
+        echo '<script>alert("Nickname,difficulty and distance are mandatory. They can not be empty")</script>';
+
+    }elseif (isset($hour,$minute) && (!is_int($hour) || !is_int($minute))){
+        //Hour and minute must have INT data type, and distance and elevationGain must have Numerics (or decimals) data type
+        echo '<script>alert("Hour and minute have to be integers")</script>';
+
+    }elseif (isset($distance,$elevationGain) && (!is_numeric($distance) || !is_numeric($elevationGain))){
+        echo '<script>alert("Distance and elevationGain have to be Numerics (or decimals)")</script>';
+
+    }elseif ($distance < 0 || $elevationGain < 0 || $hour < 0 || $minute < 0){
+        //Disatance, elevation gain, hour and minute must not be below zero
+        echo '<script>alert("Disatance, elevation gain, hour and minute must not be below zero")</script>';
+    }elseif ($minute > 60) {
+        echo'<script>alert("Minutes must not be giger than 60")</script>';
+
+    }else {
+        $reqInsert_hike = $db->prepare("UPDATE hikes SET hikeName = :hikeName,dificulty = :dificulty,
+        distance = :distance,duration = :duration,elevationGain = :elevationGain,userNickname = :userNickname
+        WHERE idhike = $currentIDHIKE");
+
+        $reqInsert_hike->bindParam(":hikeName",  $hikeName,PDO::PARAM_STR);
+        $reqInsert_hike->bindParam(":dificulty", $dificulty,PDO::PARAM_STR);
+        $reqInsert_hike->bindParam(":distance", $distance);
+        $reqInsert_hike->bindParam(":duration", $duration);
+        $reqInsert_hike->bindParam(":elevationGain", $elevationGain);
+        $reqInsert_hike->bindParam(":userNickname", $userNickname);
+
+        $reqInsert_hike->execute();
+        // redirect to index when done
+        header("location: readhikes.php");
+    }
+}
 
 ?>
 
