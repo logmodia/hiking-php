@@ -3,13 +3,14 @@
     require_once('logout.php');
 
     logout();
+    $changePass = false;
 
     if (isset($_POST['change_password'])) {
         $changePass = true;
     }elseif (isset($_POST['no_change_password'])){
         $changePass = false;
     }
-
+/* 
     if (isset($_POST["save_profile"])) {  
 
         $profile_email = strip_tags($_POST['profile_email']);
@@ -84,7 +85,7 @@
     }elseif (isset($_POST["back_to_signin"])) { // Go back to sign in page when cancel button is clicked -----------------
         header("location: /index.php");
 
-    }
+    } */
 
 ?>
 
@@ -94,6 +95,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+
     <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/style.min.css">
     <title>Hikingtrailshare | user profile</title>
@@ -101,6 +107,11 @@
 <body>
 
     <?php include_once("header.php");?>
+    
+    <?php if ($_SERVER['REQUEST_METHOD']==='POST') {
+        echo '<div class="alert alert-danger">Sorry, this feature is not yet operational. <a href="readhikes.php" class="btn btn-secondary">Get Back to Hikes list</a></div>';
+    }?>
+
 
     <h1>User : <?php echo $_SESSION["user"]['userNickname'];?></h1>
 

@@ -77,16 +77,16 @@ try {
       <?php foreach ($hikes as $i => $hike):?>
     <tr>
           <th scope="row"><?php echo $i + 1 ?></th>
-          <td><?php echo$hike['hikeName'] ?></td>
-          <td><?php echo$hike['dificulty'] ?></td>
-          <td><?php echo$hike['distance'] ?></td>
-          <td><?php echo$hike['duration'] ?></td>
-          <td><?php echo$hike['elevationGain'] ?></td>
-          <td><?php echo "Created at ".$hike['creatDate'] ?></td>
-          <td><?php echo "Updated at ".$hike['modifDate'] ?></td>
-          <td><?php echo $hike['userNickname']?></td>
+          <td><?php echo $hike['hikeName']; ?></td>
+          <td><?php echo $hike['dificulty']; ?></td>
+          <td><?php echo $hike['distance'].'km'; ?></td>
+          <td><?php echo $hike['duration']; ?></td>
+          <td><?php echo $hike['elevationGain'].'m'; ?></td>
+          <td><?php echo "Created at ".$hike['creatDate']; ?></td>
+          <td><?php echo "Updated at ".$hike['modifDate']; ?></td>
+          <td><?php echo $hike['userNickname'];?></td>
           <td>
-           <a href="updatehike.php?idhike=<?php echo$hike['idhike']?>" class="btn btn-sm btn-outline-primary">Edit</a>
+           <a href="updatehike.php?idhike=<?php echo$hike['idhike'];?>" class="btn btn-sm btn-outline-primary">Edit</a>
 
           <form action="delete.php" method="post" style="display: inline-block">
             <input type="hidden" name="idhike" value="<?php echo$hike['idhike']?>">

@@ -132,7 +132,7 @@
         <input type="number" step="0.1" class="form-control" name="distance" value="<?php echo $hike['distance'];?>">
         <label for="hour">Duration</label>
         <span>H</span>
-        <input type="number" class="form-control" name="hour" min="0" placeholder="Hour(s)" value="<?php echo $duration['hour'];?> " >
+        <input type="number" class="form-control" name="hour" min="0" placeholder="Hour(s)" value="<?php echo $duration['duration'];?> " >
         <span>min</span>
         <input type="number" class="form-control" name="minute" min="0" max="60" placeholder="minute(s)" value="<?php echo $duration['minutes'];?>" >
     

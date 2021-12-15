@@ -93,6 +93,7 @@
     <?php include_once("header.php");?>
 
       <h1>Add new Trail</h1>
+      <a href="readhikes.php" class="btn btn-secondary">Get Back to Hikes list</a>
 
       <!-- //if errors are not empty(if there are errors) then it will execute the following code -->
      <?php   if(!empty($errors)): ?>
