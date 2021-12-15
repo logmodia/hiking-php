@@ -21,7 +21,9 @@
         echo $e->getMessage();
         exit;
     }
-        
+    <input type="number" name="hour" min="0" value="<?php echo substr($hikes[0]["duration"],0,2) ?>">
+    <span>min</span>
+    <input type="number" name="minute" min="0" max="60" value="<?php echo substr($hikes[0]["duration"],-2) ?>">
 
     $errors=[];
 
