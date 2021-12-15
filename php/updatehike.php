@@ -24,13 +24,12 @@
    if (isset($_POST["update_hike"])) { //Update the current hike -----------------------------------
 
     $hikeName = ucfirst($_POST["hikeName"]);
-     $dificulty = ucfirst($_POST["dificulty"]);
-     $distance = $_POST["distance"];
-     $hour = intval($_POST["hour"]);
-     $minute = intval($_POST["minute"]);
-     $elevationGain = $_POST["elevationGain"];
-     $userNickname = ucfirst($_POST["userNickname"]);
-     $duration = "$hour:$minute";
+    $dificulty = ucfirst($_POST["dificulty"]);
+    $distance = $_POST["distance"];
+    $hour = intval($_POST["hour"]);
+    $minute = intval($_POST["minute"]);
+    $elevationGain = $_POST["elevationGain"];
+    $duration = "$hour:$minute";
 
      //Nickname,difficulty and distance are mandatory (they can't be empty)
      if (!isset($hikeName, $dificulty,$distance) || empty($hikeName) || empty($dificulty) || empty($distance)){
@@ -51,7 +50,7 @@
 
      }else {
          $reqInsert_hike = $db->prepare("UPDATE hikes SET hikeName = :hikeName,dificulty = :dificulty,
-         distance = :distance,duration = :duration,elevationGain = :elevationGain,userNickname = :userNickname
+         distance = :distance,duration = :duration,elevationGain = :elevationGain
          WHERE idhike = $currentIDHIKE");
  
          $reqInsert_hike->bindParam(":hikeName",  $hikeName,PDO::PARAM_STR);
@@ -59,7 +58,6 @@
          $reqInsert_hike->bindParam(":distance", $distance);
          $reqInsert_hike->bindParam(":duration", $duration);
          $reqInsert_hike->bindParam(":elevationGain", $elevationGain);
-         $reqInsert_hike->bindParam(":userNickname", $userNickname);
  
          $reqInsert_hike->execute();
          // redirect to index when done
@@ -75,56 +73,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+      <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
+      <link rel="stylesheet" href="/style.min.css">
     <title>Update hike</title>
 </head>
 <body>
-    
-<h1>Update trail</h1>
+    <?php include_once("header.php");?>
+
+    <p><a href="readhikes.php" class="btn btn-secondary">Get Back to Hikes list</a></p>
+    <h1><?php echo $hikes[0]['hikeName'];?></h1>
 
     <form method="post" action="">
-        <div>
-            <label for="hikeName">Trail name *</label></br>
-            <input type="text" name="hikeName" value='<?php echo $hikes[0]["hikeName"]; ?>'>
-        </div>
+        <label for="hikeName">Trail name *</label></br>
+        <input type="text" class="form-control" name="hikeName" value='<?php echo $hikes[0]["hikeName"]; ?>'>
 
-        <div>
-            <label for="dificulty">Difficulty *</label></br>
-            <input type="text" name="dificulty" list="dificultyTypes" id="dificulty" value="<?php echo $hikes[0]["dificulty"]?>">
-            <datalist id="dificultyTypes">
-                <option value="Easy">
-                <option value="Medium">
-                <option value="Difficult">
-            </datalist>
-        </div>
+        <label for="dificulty">Difficulty *</label></br>
+        <input type="text" class="form-control" name="dificulty" list="dificultyTypes" id="dificulty" value="<?php echo $hikes[0]["dificulty"]?>">
+        <datalist id="dificultyTypes">
+            <option value="Easy">
+            <option value="Medium">
+            <option value="Difficult">
+        </datalist>
 
+        <label for="distance">Distance (km) *</label></br>
+        <input type="text" class="form-control" name="distance" value="<?php echo $hikes[0]["distance"] ?>">
+
+        <label for="hour">Duration H</label></br>
+        <input type="number" class="form-control" name="hour" min="0" value="<?php echo substr($hikes[0]["duration"],0,2) ?>">
+        <span>min</span>
+        <input type="number" class="form-control" name="minute" min="0" max="60" value="<?php echo substr($hikes[0]["duration"],-2) ?>">
+        
+        <label for="elevationGain">Elevation gain (m)</label></br>
+        <input type="text" class="form-control" name="elevationGain" value="<?php echo $hikes[0]["elevationGain"] ?>">
+        
         <div>
-            <label for="distance">Distance *</label></br>
-            <input type="text" name="distance" value="<?php echo $hikes[0]["distance"] ?>">
-            <span>Km</span>
         </div>
-        <div>
-            <label for="hour">Duration</label></br>
-            <span>H</span>
-            <input type="number" name="hour" min="0" value="<?php echo substr($hikes[0]["duration"],0,2) ?>">
-            <span>min</span>
-            <input type="number" name="minute" min="0" max="60" value="<?php echo substr($hikes[0]["duration"],-2) ?>">
-        </div>
-        <div>
-            <label for="elevationGain">Elevation gain</label></br>
-            <input type="text" name="elevationGain" value="<?php echo $hikes[0]["elevationGain"] ?>">
-            <span>m</span>
-        </div>
-        <div>
-            <label for="userNickname">User</label></br>
-            <input type="text" name="userNickname" value="<?php echo $hikes[0]["userNickname"] ?>">
-        </div>
-        <button type="submit" name="update_hike">Confirm</button>
-        <button type="reset" name="Reset">Reset</button>
-        <a href="readhikes.php">
-            <button type="button" name="cancel">Cancel</button>
-        </a>
+        <button type="submit" class="btn btn-primary" name="update_hike">Confirm</button>
 
     </form>
-
+    <?php include_once("footer.php");?>
 </body>
 </html>
