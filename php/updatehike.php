@@ -66,8 +66,8 @@
             $errors[]='Minutes must not be giger than 60';
 
         }else try {
-            $reqInsert_hike = $db->prepare("UPDATE hikes SET hikeName = :hikeName,dificulty = :dificulty,
-            distance = :distance,duration = :duration,elevationGain = :elevationGain
+            $reqInsert_hike = $db->prepare("UPDATE hikes SET hikeName = ':hikeName',dificulty = ':dificulty',
+            distance = ':distance',duration = ':duration',elevationGain = ':elevationGain'
             WHERE idhike = $idhike");
 
             $reqInsert_hike->bindParam(":hikeName",  $hikeName,PDO::PARAM_STR);
